@@ -75,24 +75,30 @@ def not_blank(question):
         print("Sorry, this can't be blank. Please tey again.\n")
 
 # Main routine goes here
+# Initialise ticket number
+MAX_TICKETS = 5
+tickets_sold = 0
+
 # initialise variable / non-default options for string checker
 payment_ans = ('cash', 'credit')
 
 make_statement( "Mini-Movie Fundraiser Program", "🍿")
 
-# loop for testing purposes...
-while True:
-    print()
-    want_instructions = string_check("Do you want to see the instructions? ")
+want_instructions = string_check("Do you want to see the instructions? ")
 
-    if want_instructions == "yes":
-        instruction()
+if want_instructions == "yes":
+    instruction()
+
+# loop to get ticket data
+while True:
 
     print()
     # ask user for their name
 
-    name = input("Name: ")  # replace with call to 'not blank' function!
-
+    name = not_blank("Name: ")  # replace with call to 'not blank' function!
+    # if name is exit cade, break out of loop
+    if name == "xxx":
+        break
     # ask user for their age and checks it's between 12 and 120
     age = int_check("Age: ")
 
@@ -109,4 +115,12 @@ while True:
     # ask user for payment method
     pay_method = string_check("Payment method: ", payment_ans, 2)
     print(f"{name} had bought a ticket ({pay_method})")
+
+    tickets_sold += 1
+
+if tickets_sold == MAX_TICKETS:
+    print(f"You have sold all the tickets (ie: {MAX_TICKETS} tickets")
+else:
+    print(f"You have sold {tickets_sold} / {MAX_TICKETS} tickets."
+          f"")
 
