@@ -1,4 +1,5 @@
 import pandas
+from Tools.scripts.generate_global_objects import Printer
 
 # lists to hold ticket details
 all_names = ["A", "B", "C", "D", "E"]
@@ -14,4 +15,16 @@ mini_movie_dict = {
 # create dataframe / table from dictionary
 mini_movie_frame = pandas.DataFrame(mini_movie_dict)
 
+# Calculate the total payable & profit for each ticket
+mini_movie_frame['Total'] = mini_movie_frame['Ticket Print'] + mini_movie_frame['Surcharge']
+mini_movie_frame['Profit'] = mini_movie_frame['Ticket Prince'] - 5
+
+# Work out total paid and total profit...
+total_paid = mini_movie_frame['Total'].sum()
+total_profit = mini_movie_frame['Profit'].sum()
+
+
 print(mini_movie_frame)
+print()
+print(f"Total Pain: ${total_paid:.2f}")
+print(f"Total Profit: ${total_profit:.2f}")
