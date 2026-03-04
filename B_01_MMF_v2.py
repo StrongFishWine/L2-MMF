@@ -91,10 +91,21 @@ payment_ans = ('cash', 'credit')
 # ticket prices
 CHILD_PRICE = 7.50
 ADULT_PRICE = 10.50
-SENIOR_PRICE = 8.50
+SENIOR_PRICE = 6.50
 
 # credit surcharge 5%
 CREDIT_SURCHARGE = 0.05
+
+all_names = []
+all_ticket_costs = []
+all_surcharges = []
+
+mini_movie_dict = {
+    'Name': all_names,
+    'Ticket Price': all_ticket_costs,
+    'Surcharge': all_surcharges
+}
+
 
 # program main heading
 make_statement( "Mini-Movie Fundraiser Program", "🍿")
@@ -158,14 +169,18 @@ while True:
 
     tickets_sold += 1
 
+    # make sure that we can't sell more than the maximum number of tickets
+    if tickets_sold >= MAX_TICKETS:
+        break
+
 # end of loop
 
 # create dataframe / table from dictionary
 mini_movie_frame = pandas.DataFrame(mini_movie_dict)
 
 # Calculate the total payable & profit for each ticket
-mini_movie_frame['Total'] = mini_movie_frame['Ticket Print'] + mini_movie_frame['Surcharge']
-mini_movie_frame['Profit'] = mini_movie_frame['Ticket Prince'] - 5
+mini_movie_frame['Total'] = mini_movie_frame['Ticket Price'] + mini_movie_frame['Surcharge']
+mini_movie_frame['Profit'] = mini_movie_frame['Ticket Price'] - 5
 
 # Work out total paid and total profit...
 total_paid = mini_movie_frame['Total'].sum()
