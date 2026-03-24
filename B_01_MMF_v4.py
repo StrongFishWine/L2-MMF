@@ -1,12 +1,14 @@
 import pandas
 import random
 
+
 # Functions go here
 def make_statement(statement, decoration):
     """Emphasises headings by adding decoration
     at the start and end"""
 
-    return(f"{decoration * 3} {statement} {decoration * 3}")
+    return f"{decoration * 3} {statement} {decoration * 3}"
+
 
 def string_check(question, valid_answers=('yes', 'no'),
                  num_letters=1):
@@ -29,8 +31,9 @@ def string_check(question, valid_answers=('yes', 'no'),
 
         print(f"Please choose an option from {valid_answers}")
 
+
 def instructions():
-    make_statement("Instructions", "ℹ️")
+    print(make_statement("Instructions", "ℹ️"))
 
     print('''
 
@@ -51,6 +54,7 @@ draw (their ticket is free).
 
     ''')
 
+
 def not_blank(question):
     """Checks that a user response is not blank"""
 
@@ -61,6 +65,7 @@ def not_blank(question):
             return response
 
         print("Sorry, this can't be blank.  Please try again.\n")
+
 
 def int_check(question):
     """Checks users enter an integer"""
@@ -78,9 +83,11 @@ def int_check(question):
         except ValueError:
             print(error)
 
+
 def currency(x):
     """Formats numbers as currency ($#.##)"""
     return "${:.2f}".format(x)
+
 
 # Main routine goes here
 
@@ -174,6 +181,7 @@ while tickets_sold < MAX_TICKETS:
 
     tickets_sold += 1
 
+
 # End of Ticket Loop!
 
 # create dataframe / table from dictionary
@@ -194,12 +202,9 @@ winner = random.choice(all_names)
 winner_index = all_names.index(winner)
 
 # retrieve Winner Ticket Price and Profit (so we can adjust
-# profit numbers so that the winner ticket is excluded)
+# profit numbers so that the winning ticket is excluded)
 ticket_won = mini_movie_frame.at[winner_index, 'Total']
 profit_won = mini_movie_frame.at[winner_index, 'Profit']
-
-# retrieve Total won
-total_won = mini_movie_frame.at[winner_index, 'Total']
 
 # Currency Formatting (uses currency function)
 add_dollars = ['Ticket Price', 'Surcharge', 'Total', 'Profit']
@@ -212,31 +217,60 @@ mini_movie_string = mini_movie_frame.to_string(index=False)
 total_paid_string = f"Total Paid: ${total_paid:.2f}"
 total_profit_string = f"Total Profit: ${total_profit:.2f}"
 
+adjusted_explanation = (f"We have given away a ticket worth ${ticket_won:.2f} which \n"
+                        f"means our sales have decreased by ${ticket_won:.2f} and our \n"
+                        f"profit decreased by ${profit_won:.2f}.")
+
 # winner announcement
-lucky_winner_string = (f"The lucky winner is {winner}.   "
-      f"Their ticket worth {total_won} is free!")
+lucky_winner_string = (f"The lucky winner is {winner}.  "
+                       f"Their ticket worth ${ticket_won:.2f} is free!")
 final_total_paid_string = f"Total Paid is now ${total_paid - ticket_won:.2f}"
-final_profit_sting = f"Total Profit is now ${total_profit - profit_won:.2f}"
+final_profit_string = f"Total Profit is now ${total_profit - profit_won:.2f}"
 
 if tickets_sold == MAX_TICKETS:
-    num_sold_string = make_statement(f"You have sold all the tickets" 
+    num_sold_string = make_statement(f"You have sold all the tickets "
                                      f"(ie: {MAX_TICKETS} tickets)", "-")
 else:
     num_sold_string = make_statement(f"You have sold {tickets_sold} / "
                                      f"{MAX_TICKETS} tickets.", "-")
 
-# Additional string / Heading
+# Additional strings / Headings
 heading_string = make_statement("Mini Movie Fundraiser", "=")
 ticket_details_heading = make_statement("Ticket Details", "-")
 raffle_heading = make_statement("--- Raffle Winner ---", "-")
 adjusted_sales_heading = make_statement("Adjusted Sales & Profit",
                                         "-")
-adjusted_explanation = (f""
-                        f""
-                        f""
-                        f""
-                        f""
-                        f"")
+adjusted_explanation = (f"We have given away a ticket worth ${ticket_won:.2f} which means \nour "
+                       f"sales have decreased by ${ticket_won:.2f} and our profit \n"
+                       f"decreased by ${profit_won:.2f}")
 
-# list of string to be outputted / written to file
-to_write = []
+# List of strings to be outputted / written to file
+to_write = [heading_string, "\n",
+            ticket_details_heading,
+            mini_movie_string, "\n",
+            total_paid_string,
+            total_profit_string, "\n",
+            raffle_heading,
+            lucky_winner_string, "\n",
+            adjusted_sales_heading,
+            adjusted_explanation, "\n",
+            final_total_paid_string,
+            final_profit_string, "\n",
+            num_sold_string]
+
+# Print area
+print()
+for item in to_write:
+    print(item)
+
+# create file to hold data (add .txt extension)
+file_name = "write_experiment"
+write_to = "{}.txt".format(file_name)
+
+text_file = open(write_to, "w+")
+
+# write the item to file
+for item in to_write:
+    text_file.write(item)
+    text_file.write("\n")
+
